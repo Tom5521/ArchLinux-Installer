@@ -75,7 +75,7 @@ if check.upper() == "YES" or "Y":
                 if double_check == "YES":
                     sys(f"mkfs.ext4 -F {home_partition}")
         if swap_partition != "":
-            sys(f"mkfs.ext4 -F {swap_partition}")
+            sys(f"mkswap {swap_partition}")
 sys(f"mount {root_partition} /mnt")
 sys(f"mount {boot_partition} /mnt/boot")
 if home_partition != "":
