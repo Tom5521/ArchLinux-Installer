@@ -1,2 +1,2 @@
 # Arch-Installer
-A Arch Linux Instalator
+My custom Arch Linux Instalator
