@@ -10,25 +10,27 @@
         "boot": {
             "partition": "/dev/",
             "format": "y",
-            "filesystem": "ext4"
+            "filesystem": "fat32"
         },
         "root": {
             "partition": "/dev/",
-            "format": "y",
+            "format": "n",
             "filesystem": "ext4"
         },
         "home": {
             "partition": "/dev/",
-            "format": "y",
+            "format": "n",
             "filesystem": "ext4"
         },
         "swap": {
             "partition": "/dev/",
-            "format": "y"
+            "format": "n"
         }
     },
+    "pacstrap_skip": "y",
     "additional_packages": "vim",
     "uefi": "n",
-    "chroot": "y",
+    "arch-chroot": "y",
+    "post_install_commands": "echo Hiii!",
     "reboot": "n"
 }

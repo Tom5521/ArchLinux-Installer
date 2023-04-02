@@ -27,10 +27,12 @@ wifi = {
     "adaptator": dat["wifi"]["adaptator"],
 }
 additional_packages = dat["additional_packages"]
-chroot = dat["chroot"]
+arch_chroot = dat["arch-chroot"]
 reboot = dat["reboot"]
 custom_config = dat["custom_pacman_config"]
 uefi = dat["uefi"]
+p_i_c = dat["post_install_commands"]
+pacstrap_skip = dat["pacstrap_skip"]
 
 
 class partitions:
@@ -57,6 +59,7 @@ class partitions:
 
 sys(f"loadkeys {keyboard}")
 global wifii
+wifii = ""
 if wifi["state"] == "y":
     sys("rfkill unblock all")
     sys(f"ip link set {wifi['adaptator']} up")
@@ -96,12 +99,18 @@ if partitions.swap["partition"] != "/dev/":
     sys("swaplabel " + partitions.swap["partition"])
     sys("swapon")
 
-sys(
-    f"pacstrap /mnt base base-devel grub git efibootmgr dialog wpa_supplicant nano linux linux-headers linux-firmware {wifii} {additional_packages}"
-)
+if pacstrap_skip == "n":
+    sys(
+        f"pacstrap /mnt base base-devel grub git efibootmgr dialog wpa_supplicant nano linux linux-headers linux-firmware {wifii} {additional_packages}"
+    )
 sys("genfstab -U /mnt >> /mnt/etc/fstab")
 if uefi == "y":
-    sys("grub-install --target=x86_64-efi --efi-directory=/mnt/efi --recheck")
+    sys(
+        "exit|echo grub-install --target=x86_64-efi --efi-directory=/mnt/efi --recheck|arch-chroot /mnt"
+    )
 else:
     sys("grub-install --target=i386-pc --recheck " + partitions.boot["partition"])
-sys("exit|grub-mkconfig -o /boot/grub/grub.cfg|chroot /mnt")
+sys("exit|echo grub-mkconfig -o /boot/grub/grub.cfg|arch-chroot /mnt")
+sys(p_i_c)
+if reboot == "y":
+    sys("reboot")

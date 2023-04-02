@@ -98,4 +98,4 @@ sys(
 )
 clear()
 sys("genfstab -U /mnt >> /mnt/etc/fstab")
-print("Please install grub yourself with chroot")
+print("Please install grub yourself with arch_chroot")
