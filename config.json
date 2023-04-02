@@ -1,0 +1,34 @@
+{
+    "custom_pacman_config": "y",
+    "keyboard": "en",
+    "wifi": {
+        "state": "n",
+        "name": "my wifi",
+        "adaptator": "wlan0"
+    },
+    "partitions": {
+        "boot": {
+            "partition": "/dev/",
+            "format": "y",
+            "filesystem": "ext4"
+        },
+        "root": {
+            "partition": "/dev/",
+            "format": "y",
+            "filesystem": "ext4"
+        },
+        "home": {
+            "partition": "/dev/",
+            "format": "y",
+            "filesystem": "ext4"
+        },
+        "swap": {
+            "partition": "/dev/",
+            "format": "y"
+        }
+    },
+    "additional_packages": "vim",
+    "uefi": "n",
+    "chroot": "y",
+    "reboot": "n"
+}
