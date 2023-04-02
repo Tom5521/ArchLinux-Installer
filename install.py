@@ -9,6 +9,7 @@ import urllib.request
 
 def clear():
     sys("clear")
+    pass
 
 
 def internet_on():
@@ -19,18 +20,22 @@ def internet_on():
         return False
 
 
+global web
+web = ""
+
+
 def get_connection_type():
     route = os.popen("ip route").read()
     if "wlan" in route:
-        return "wifi"
+        web = "networkmanager "
+        return "wifi", web
     elif "eth" in route:
         return "wired"
     else:
-        return "desconocida"
+        return "unknown"
 
 
-print("Put the keyboard")
-keyboard = str(input(""))
+keyboard = str(input("Put the keyboard\n:"))
 sys(f"loadkeys {keyboard}")
 clear()
 if internet_on() == False:
@@ -46,19 +51,17 @@ if internet_on() == False:
         pass
 print("Config the partitions")
 sys("fdisk -l")
-disk = str(input("Why DISK want use?\n:"))
+disk = str("/dev/" + input("Why DISK want use?\n:/dev/"))
 sys(f"cfdisk {disk}")
+clear()
+sys("fdisk -l")
 print(
     "Why partitions you want use to install?(leave it blank if you don't want it to be used)"
 )
-print("root partition?")
-root_partition = str(input(":"))
-print("boot partition?")
-boot_partition = str(input(":"))
-print("home partition?")
-home_partition = str(input(":"))
-print("swap partition?")
-swap_partition = str(input(":"))
+root_partition = str("/dev/" + input("root partition?\n:/dev/"))
+boot_partition = str("/dev/" + input("boot partition?\n:/dev/"))
+home_partition = str("/dev/" + input("home partition?\n:/dev/"))
+swap_partition = str("/dev/" + input("swap partition?\n:/dev/"))
 clear()
 check = str(input("Format partitions?[Yes/No]\n:"))
 if check.upper() == "YES" or "Y":
@@ -66,7 +69,7 @@ if check.upper() == "YES" or "Y":
     if double_check == "YES":
         sys(f"mkfs.ext4 -F {root_partition}")
         sys(f"mkfs.fat -F 32 {boot_partition}")
-        if home_partition != "":
+        if home_partition != "/dev/":
             check = str(input("Format home partition?[Yes/No]\n:"))
             if check.upper() == "YES" or "Y":
                 double_check = str(
@@ -74,33 +77,42 @@ if check.upper() == "YES" or "Y":
                 )
                 if double_check == "YES":
                     sys(f"mkfs.ext4 -F {home_partition}")
-        if swap_partition != "":
+        if swap_partition != "/dev/":
             sys(f"mkswap {swap_partition}")
+if check == "NO" or "N":
+    pass
 sys(f"mount {root_partition} /mnt")
+check_boot = os.listdir("/mnt")
+if "boot" not in check_boot:
+    os.mkdir("/mnt/boot")
 sys(f"mount {boot_partition} /mnt/boot")
-if home_partition != "":
+if home_partition != "/dev/":
     sys(f"mount {home_partition} /mnt/home")
-if swap_partition != "":
+if swap_partition != "/dev/":
     sys(f"swaplabel {swap_partition}")
-if get_connection_type == "wifi":
-    web = "networkmanager "
 print("put the faster pacman config")
 sys("cp -f pacman.conf /etc")
-sys("pacman -Syy")
 clear()
-print("Custom packages to install?\n:")
-custom = str(input())
+custom = str(input("Custom packages to install?\n:"))
 sys(
     f"pacstrap /mnt base base-devel grub git efibootmgr dialog wpa_supplicant nano linux linux-headers linux-firmware {web} {custom}"
 )
+clear()
+os.chdir("/mnt")
+sys(
+    f"grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch_grub --recheck"
+)
+sys("grub-mkconfig -o /mnt/boot/grub/grub.cfg")
+clear()
 sys("genfstab -U /mnt >> /mnt/etc/fstab")
-clear()
-sys(f"grub-install --root-directory=/mnt {root_partition}")
-clear()
-sleep_seconds = 5
+sleep_seconds = 10
+
 while True:
     clear()
-    print(f"Instalation Completed!\nRebooting in {sleep_seconds} seconds...", end="\r")
+    print(
+        f"Instalation Completed!\nNow you can disconnect the USB!\nRebooting in {sleep_seconds} seconds...",
+        end="\r",
+    )
     sleep_seconds -= 1
     sl(1)
     if sleep_seconds == 0:
