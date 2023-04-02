@@ -3,8 +3,7 @@ import os
 import urllib
 from time import sleep as sl
 
-print("My custom Arch Installer\nRun this with sudo")
-import urllib.request
+print("My custom Arch Installer")
 
 
 def clear():
@@ -64,7 +63,7 @@ home_partition = str("/dev/" + input("home partition?\n:/dev/"))
 swap_partition = str("/dev/" + input("swap partition?\n:/dev/"))
 clear()
 check = str(input("Format partitions?[Yes/No]\n:"))
-if check.upper() == "YES" or "Y":
+if check == "yes" or "y" or "Yes":
     double_check = str(input("YOU REALLY WANT TO FORMAT THE PARTITIONS?[YES/NO]\n:"))
     if double_check == "YES":
         sys(f"mkfs.ext4 -F {root_partition}")
@@ -98,22 +97,5 @@ sys(
     f"pacstrap /mnt base base-devel grub git efibootmgr dialog wpa_supplicant nano linux linux-headers linux-firmware {web} {custom}"
 )
 clear()
-os.chdir("/mnt")
-sys(
-    f"grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch_grub --recheck"
-)
-sys("grub-mkconfig -o /mnt/boot/grub/grub.cfg")
-clear()
 sys("genfstab -U /mnt >> /mnt/etc/fstab")
-sleep_seconds = 10
-
-while True:
-    clear()
-    print(
-        f"Instalation Completed!\nNow you can disconnect the USB!\nRebooting in {sleep_seconds} seconds...",
-        end="\r",
-    )
-    sleep_seconds -= 1
-    sl(1)
-    if sleep_seconds == 0:
-        sys("reboot now")
+print("Please install grub yourself with chroot")
