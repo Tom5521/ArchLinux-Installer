@@ -80,7 +80,7 @@ else:
     print(red("WARNING:pacman.conf already pasted"))
 # ~~~~~~~~~~~~~~~~~~~~~~~~~FORMAT~PARTITIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if partitions.boot["format"] == True:
-    if partitions.boot["format"] == "fat32":
+    if partitions.boot["filesystem"] == "fat32":
         sys("mkfs.fat -F 32 " + partitions.boot["partition"])
     else:
         sys(
