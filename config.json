@@ -3,17 +3,18 @@
     "keyboard": "en",
     "wifi": {
         "state": false,
-        "name": "my wifi",
-        "adaptator": "wlan0"
+        "name": "'My wifi'",
+        "adaptator": "wlan0",
+        "password": "'my_password_is_horrible'"
     },
     "partitions": {
         "boot": {
-            "partition": "/dev/",
+            "partition": "/dev/sda1",
             "format": true,
             "filesystem": "fat32"
         },
         "root": {
-            "partition": "/dev/",
+            "partition": "/dev/sda2",
             "format": false,
             "filesystem": "ext4"
         },

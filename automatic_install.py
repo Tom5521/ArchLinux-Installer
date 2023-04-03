@@ -1,5 +1,6 @@
 from os import system as sys
 import json
+import subprocess
 
 with open("config.json") as f:
     dat = json.load(f)
@@ -9,12 +10,23 @@ def clear():
     sys("clear")
 
 
+def command_read(command):
+    result = subprocess.run(command.split(), stdout=subprocess.PIPE)
+    output = result.stdout.decode("utf-8")
+    return output
+
+
+def red(datt):
+    return "\033[31m" + datt + "\033[0m"
+
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~FLAGS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 keyboard = dat["keyboard"]
 wifi = {
     "state": dat["wifi"]["state"],
     "name": dat["wifi"]["name"],
     "adaptator": dat["wifi"]["adaptator"],
+    "wifi_passwd": dat["wifi"]["password"],
 }
 additional_packages = dat["additional_packages"]
 arch_chroot = dat["arch-chroot"]
@@ -51,14 +63,21 @@ class partitions:
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-sys(f"loadkeys {keyboard}")
-if wifi["state"] == True:
+if wifi["state"] == True and wifi["adaptator"] in command_read("ip link"):
     sys("rfkill unblock all")
     sys(f"ip link set {wifi['adaptator']} up")
-    sys(f"iwctl station {wifi['adaptator']} connect {wifi['name']}")
-    wifii = "networkmanger "
-if custom_config == True:
+    sys(
+        f"iwctl station {wifi['adaptator']} connect {wifi['name']} --passphrase {wifi['wifi_passwd']}"
+    )
+    wifii = "networkmanger iwd "
+if wifi["adaptator"] not in command_read("ip link"):
+    print(red("WARNING:Adaptator not found"))
+if custom_config == True and "---YES---THATS---MODIFIED---" not in command_read(
+    "cat /etc/pacman.conf"
+):
     sys("cp pacman.conf /etc")
+else:
+    print(red("WARNING:pacman.conf already pasted"))
 # ~~~~~~~~~~~~~~~~~~~~~~~~~FORMAT~PARTITIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if partitions.boot["format"] == True:
     if partitions.boot["format"] == "fat32":
@@ -104,6 +123,10 @@ else:
     sys("grub-install --target=i386-pc --recheck " + partitions.boot["partition"])
 sys("exit|echo grub-mkconfig -o /boot/grub/grub.cfg|arch-chroot /mnt")
 sys(p_i_c)
+if keyboard in command_read("localectl list-keymaps"):
+    sys(f"echo KEYMAP={keyboard} > /mnt/etc/vconsole.conf")
+else:
+    print(red("WARNING:keyboard specification not exist"))
 sys(f"exit|{p_i_ch_c}|arch-chroot /mnt")
 if arch_chroot == True:
     sys("arch-chroot /mnt")
