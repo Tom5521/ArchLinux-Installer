@@ -1,25 +1,15 @@
 from os import system as sys
-import os
-import urllib
-from time import sleep as sl
 import json
 
 with open("config.json") as f:
     dat = json.load(f)
 
 
-def internet_on():
-    try:
-        urllib.request.urlopen("https://archlinux.org/", timeout=1)
-        return True
-    except urllib.request.URLError as e:
-        return False
-
-
 def clear():
     sys("clear")
 
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~FLAGS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 keyboard = dat["keyboard"]
 wifi = {
     "state": dat["wifi"]["state"],
@@ -32,7 +22,10 @@ reboot = dat["reboot"]
 custom_config = dat["custom_pacman_config"]
 uefi = dat["uefi"]
 p_i_c = dat["post_install_commands"]
+p_i_ch_c = dat["post_install_chroot_commands"]
 pacstrap_skip = dat["pacstrap_skip"]
+global wifii
+wifii = ""
 
 
 class partitions:
@@ -57,36 +50,35 @@ class partitions:
     }
 
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 sys(f"loadkeys {keyboard}")
-global wifii
-wifii = ""
-if wifi["state"] == "y":
+if wifi["state"] == True:
     sys("rfkill unblock all")
     sys(f"ip link set {wifi['adaptator']} up")
     sys(f"iwctl station {wifi['adaptator']} connect {wifi['name']}")
     wifii = "networkmanger "
-if custom_config == "y":
+if custom_config == True:
     sys("cp pacman.conf /etc")
-
-if partitions.boot["format"] == "y":
+# ~~~~~~~~~~~~~~~~~~~~~~~~~FORMAT~PARTITIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if partitions.boot["format"] == True:
     if partitions.boot["format"] == "fat32":
         sys("mkfs.fat -F 32 " + partitions.boot["partition"])
     else:
         sys(
             "mkfs." + partitions.boot["filesystem"] + " " + partitions.boot["partition"]
         )
-if partitions.root["format"] == "y":
+if partitions.root["format"] == True:
     sys("mkfs." + partitions.root["filesystem"] + " " + partitions.root["partition"])
 
-if partitions.home["format"] == "y" and partitions.home["partition"] != "/dev/":
+if partitions.home["format"] == True and partitions.home["partition"] != "/dev/":
     sys("mkfs." + partitions.home["filesystem"] + " " + partitions.home["partition"])
 
-if partitions.swap["format"] == "y" and partitions.swap["partition"] != "/dev/":
+if partitions.swap["format"] == True and partitions.swap["partition"] != "/dev/":
     sys("mkswap " + partitions.swap["partition"])
-
-
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~MOUNT~PARTITIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 sys("mount " + partitions.root["partition"] + " /mnt")
-if uefi == "y":
+if uefi == True:
     sys("mkdir /mnt/efi")
     sys("mount " + partitions.boot["partition"] + " /mnt/efi")
 else:
@@ -98,13 +90,13 @@ if partitions.home["partition"] != "/dev/":
 if partitions.swap["partition"] != "/dev/":
     sys("swaplabel " + partitions.swap["partition"])
     sys("swapon")
-
-if pacstrap_skip == "n":
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if pacstrap_skip == False:
     sys(
         f"pacstrap /mnt base base-devel grub git efibootmgr dialog wpa_supplicant nano linux linux-headers linux-firmware {wifii} {additional_packages}"
     )
 sys("genfstab -U /mnt >> /mnt/etc/fstab")
-if uefi == "y":
+if uefi == True:
     sys(
         "exit|echo grub-install --target=x86_64-efi --efi-directory=/mnt/efi --recheck|arch-chroot /mnt"
     )
@@ -112,5 +104,8 @@ else:
     sys("grub-install --target=i386-pc --recheck " + partitions.boot["partition"])
 sys("exit|echo grub-mkconfig -o /boot/grub/grub.cfg|arch-chroot /mnt")
 sys(p_i_c)
-if reboot == "y":
+sys(f"exit|{p_i_ch_c}|arch-chroot /mnt")
+if arch_chroot == True:
+    sys("arch-chroot /mnt")
+if reboot == True:
     sys("reboot")

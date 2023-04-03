@@ -1,36 +1,37 @@
 {
-    "custom_pacman_config": "y",
+    "custom_pacman_config": true,
     "keyboard": "en",
     "wifi": {
-        "state": "n",
+        "state": false,
         "name": "my wifi",
         "adaptator": "wlan0"
     },
     "partitions": {
         "boot": {
             "partition": "/dev/",
-            "format": "y",
+            "format": true,
             "filesystem": "fat32"
         },
         "root": {
             "partition": "/dev/",
-            "format": "n",
+            "format": false,
             "filesystem": "ext4"
         },
         "home": {
             "partition": "/dev/",
-            "format": "n",
+            "format": false,
             "filesystem": "ext4"
         },
         "swap": {
             "partition": "/dev/",
-            "format": "n"
+            "format": false
         }
     },
-    "pacstrap_skip": "y",
+    "pacstrap_skip": false,
     "additional_packages": "vim",
-    "uefi": "n",
-    "arch-chroot": "y",
+    "uefi": false,
+    "arch-chroot": true,
     "post_install_commands": "echo Hiii!",
-    "reboot": "n"
+    "post_install_chroot_commands": "echo post install chroot command|echo YES",
+    "reboot": false
 }
