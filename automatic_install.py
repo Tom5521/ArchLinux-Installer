@@ -48,17 +48,17 @@ class partitions:
     }
     root = {
         "partition": dat["partitions"]["root"]["partition"],
-        "format": dat["partitions"]["boot"]["format"],
-        "filesystem": dat["partitions"]["boot"]["filesystem"],
+        "format": dat["partitions"]["root"]["format"],
+        "filesystem": dat["partitions"]["root"]["filesystem"],
     }
     home = {
         "partition": dat["partitions"]["home"]["partition"],
-        "format": dat["partitions"]["boot"]["format"],
-        "filesystem": dat["partitions"]["boot"]["filesystem"],
+        "format": dat["partitions"]["home"]["format"],
+        "filesystem": dat["partitions"]["home"]["filesystem"],
     }
     swap = {
         "partition": dat["partitions"]["swap"]["partition"],
-        "format": dat["partitions"]["boot"]["format"],
+        "format": dat["partitions"]["swap"]["format"],
     }
 
 
