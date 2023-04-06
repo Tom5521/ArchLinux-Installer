@@ -21,6 +21,10 @@ def red(datt):
     return "\033[31m" + datt + "\033[0m"
 
 
+def green(datt):
+    return "\033[32m" + datt + "\033[32m"
+
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~FLAGS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 keyboard = dat["keyboard"]
 wifi = {
@@ -80,8 +84,9 @@ if custom_config == True and "---YES---THATS---MODIFIED---" not in command_read(
 ):
     sys("cp pacman.conf /etc")
 else:
-    print(red("WARNING:pacman.conf already pasted"))
+    print(green("Pacman.conf already pasted"))
 # ~~~~~~~~~~~~~~~~~~~~~~~~~FORMAT~PARTITIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+print(red("FORMATTING PARTITIONS"))
 if partitions.boot["format"] == True:
     if partitions.boot["filesystem"] == "fat32":
         sys("mkfs.vfat -F 32 " + partitions.boot["partition"])
@@ -102,6 +107,7 @@ if partitions.swap["format"] == True and partitions.swap["partition"] != "/dev/"
     sys("mkswap " + partitions.swap["partition"])
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~MOUNT~PARTITIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+print(green("Mounting partitions..."))
 sys("mount " + partitions.root["partition"] + " /mnt")
 if uefi == True:
     if "efi" not in os.listdir(path="/mnt"):
@@ -125,6 +131,7 @@ if pacstrap_skip == False:
     )
 sys("genfstab -pU /mnt >> /mnt/etc/fstab")
 
+print(green("Installing grub..."))
 if uefi == False:
     sys(f"echo exit|echo grub-install {grub_install_disk}|arch-chroot /mnt")
 else:
