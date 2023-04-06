@@ -3,7 +3,7 @@ My custom Arch Linux Instalator
 
 ### Configure
 
-You can configure it modifying the file ```config.json``` and executing ```automatic_install.py```
+You can configure it modifying the file ```config.json``` and executing ```install.py```
 
 To config the partitions after you need configure it with ```cfdisk``` or ```fdisk```
 

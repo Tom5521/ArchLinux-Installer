@@ -1,6 +1,7 @@
 from os import system as sys
 import json
 import subprocess
+import os
 
 with open("config.json") as f:
     dat = json.load(f)
@@ -38,6 +39,8 @@ p_i_ch_c = dat["post_install_chroot_commands"]
 pacstrap_skip = dat["pacstrap_skip"]
 global wifii
 wifii = ""
+grub_install_disk = dat["grub_install_disk"]
+root_password = dat["root_passwd"]
 
 
 class partitions:
@@ -70,7 +73,7 @@ if wifi["state"] == True and wifi["adaptator"] in command_read("ip link"):
         f"iwctl station {wifi['adaptator']} connect {wifi['name']} --passphrase {wifi['wifi_passwd']}"
     )
     wifii = "networkmanger iwd "
-if wifi["adaptator"] not in command_read("ip link"):
+if wifi["adaptator"] not in command_read("ip link") and wifi["state"] == True:
     print(red("WARNING:Adaptator not found"))
 if custom_config == True and "---YES---THATS---MODIFIED---" not in command_read(
     "cat /etc/pacman.conf"
@@ -81,16 +84,19 @@ else:
 # ~~~~~~~~~~~~~~~~~~~~~~~~~FORMAT~PARTITIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if partitions.boot["format"] == True:
     if partitions.boot["filesystem"] == "fat32":
-        sys("mkfs.fat -F 32 " + partitions.boot["partition"])
+        sys("mkfs.vfat -F 32 " + partitions.boot["partition"])
     else:
         sys(
-            "mkfs." + partitions.boot["filesystem"] + " " + partitions.boot["partition"]
+            "mkfs."
+            + partitions.boot["filesystem"]
+            + " -F "
+            + partitions.boot["partition"]
         )
 if partitions.root["format"] == True:
-    sys("mkfs." + partitions.root["filesystem"] + " " + partitions.root["partition"])
+    sys("mkfs." + partitions.root["filesystem"] + " -F " + partitions.root["partition"])
 
 if partitions.home["format"] == True and partitions.home["partition"] != "/dev/":
-    sys("mkfs." + partitions.home["filesystem"] + " " + partitions.home["partition"])
+    sys("mkfs." + partitions.home["filesystem"] + " -F " + partitions.home["partition"])
 
 if partitions.swap["format"] == True and partitions.swap["partition"] != "/dev/":
     sys("mkswap " + partitions.swap["partition"])
@@ -98,13 +104,16 @@ if partitions.swap["format"] == True and partitions.swap["partition"] != "/dev/"
 # ~~~~~~~~~~~~~~~~~~~~MOUNT~PARTITIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 sys("mount " + partitions.root["partition"] + " /mnt")
 if uefi == True:
-    sys("mkdir /mnt/efi")
+    if "efi" not in os.listdir(path="/mnt"):
+        sys("mkdir /mnt/efi")
     sys("mount " + partitions.boot["partition"] + " /mnt/efi")
 else:
-    sys("mkdir /mnt/boot")
+    if "boot" not in os.listdir(path="/mnt"):
+        sys("mkdir /mnt/boot")
     sys("mount " + partitions.boot["partition"] + " /mnt/boot")
 if partitions.home["partition"] != "/dev/":
-    sys("mkdir /mnt/home")
+    if "home" not in os.listdir(path="/mnt"):
+        sys("mkdir /mnt/home")
     sys("mount " + partitions.home["partition"] + " /mnt/home")
 if partitions.swap["partition"] != "/dev/":
     sys("swaplabel " + partitions.swap["partition"])
@@ -114,20 +123,25 @@ if pacstrap_skip == False:
     sys(
         f"pacstrap /mnt base base-devel grub git efibootmgr dialog wpa_supplicant nano linux linux-headers linux-firmware {wifii} {additional_packages}"
     )
-sys("genfstab -U /mnt >> /mnt/etc/fstab")
-if uefi == True:
-    sys(
-        "exit|echo grub-install --target=x86_64-efi --efi-directory=/mnt/efi --recheck|arch-chroot /mnt"
-    )
+sys("genfstab -pU /mnt >> /mnt/etc/fstab")
+
+if uefi == False:
+    sys(f"echo exit|echo grub-install {grub_install_disk}|arch-chroot /mnt")
 else:
-    sys("grub-install --target=i386-pc --recheck " + partitions.boot["partition"])
-sys("exit|echo grub-mkconfig -o /boot/grub/grub.cfg|arch-chroot /mnt")
+    sys(
+        f"echo exit|echo grub-install {grub_install_disk} --efi-directory /efi|arch-chroot /mnt"
+    )
+sys("echo exit|echo grub-mkconfig -o /boot/grub/grub.cfg|arch-chroot /mnt")
 sys(p_i_c)
 if keyboard in command_read("localectl list-keymaps"):
     sys(f"echo KEYMAP={keyboard} > /mnt/etc/vconsole.conf")
 else:
     print(red("WARNING:keyboard specification not exist"))
-sys(f"exit|{p_i_ch_c}|arch-chroot /mnt")
+sys(f"echo exit|echo {p_i_ch_c}|arch-chroot /mnt")
+
+
+sys(f"echo exit|echo 'root:{root_password}' | echo chpasswd|arch-chroot /mnt")
+
 if arch_chroot == True:
     sys("arch-chroot /mnt")
 if reboot == True:

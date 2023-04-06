@@ -1,7 +1,6 @@
 {
-    "root_passwd": "1234",
     "custom_pacman_config": true,
-    "keyboard": "es",
+    "keyboard": "en",
     "wifi": {
         "state": false,
         "name": "'My wifi'",
@@ -17,24 +16,24 @@
         "root": {
             "partition": "/dev/sda2",
             "format": true,
-            "filesystem": "ext4"
+            "filesystem": "btrfs"
         },
         "home": {
-            "partition": "/dev/",
+            "partition": "/dev/sda3",
             "format": false,
-            "filesystem": "ext4"
+            "filesystem": "btrfs"
         },
         "swap": {
-            "partition": "/dev/",
+            "partition": "/dev/sda4",
             "format": false
         }
     },
     "grub_install_disk": "/dev/sda",
     "pacstrap_skip": false,
-    "additional_packages": "vim",
+    "additional_packages": "vim wine neovim nano",
     "uefi": false,
-    "arch-chroot": false,
+    "arch-chroot": true,
     "post_install_commands": "echo Hiii!",
-    "post_install_chroot_commands": "pacman -S fish",
-    "reboot": false
+    "post_install_chroot_commands": "pacman -S fish --noconfirm",
+    "reboot": true
 }
