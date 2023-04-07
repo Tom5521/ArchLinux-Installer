@@ -31,7 +31,7 @@
     "grub_install_disk": "/dev/",
     "pacstrap_skip": false,
     "additional_packages": "",
-    "uefi": true,
+    "uefi": false,
     "arch-chroot": false,
     "post_install_commands": "",
     "post_install_chroot_commands": "",
