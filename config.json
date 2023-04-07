@@ -1,6 +1,6 @@
 {
     "custom_pacman_config": true,
-    "keyboard": "",
+    "keyboard": "en",
     "wifi": {
         "state": false,
         "name": "''",
