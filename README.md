@@ -31,6 +31,7 @@ El archivo JSON es una estructura de datos que se utiliza para configurar los pa
 ```grub_install_disk```: El dispositivo de almacenamiento en el que se instalará el gestor de arranque GRUB. El valor predeterminado es "/dev/".
 
 ```pacstrap_skip```: Un valor booleano que indica si se desea saltar la instalación de los paquetes básicos de Arch Linux. El valor predeterminado es "false".
+
 ```additional_packages```: Una cadena que especifica los paquetes adicionales que se desean instalar. El valor predeterminado es una cadena vacía.
 
 ```uefi```: Un valor booleano que indica si el sistema utiliza UEFI en lugar del BIOS. El valor predeterminado es "false".
