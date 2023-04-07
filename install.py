@@ -131,7 +131,7 @@ if pacstrap_skip == False:
 sys("genfstab -pU /mnt >> /mnt/etc/fstab")
 
 print(green("Installing grub..."))
-if uefi == True:
+if uefi == False:
     sys(f"echo exit|echo grub-install {grub_install_disk}|arch-chroot /mnt")
 else:
     sys(
