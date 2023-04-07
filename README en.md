@@ -36,11 +36,18 @@ The JSON file is a data structure used to configure the installation parameters 
 
 #### Extra Configs
 
-`grub_install_disk`: The storage device where the GRUB bootloader will be installed. The default value is "/dev/". 
-`pacstrap_skip`: A boolean value indicating whether to skip the installation of Arch Linux basic packages. The default value is "false". 
-`additional_packages`: A string specifying the additional packages to install. The default value is an empty string. 
-`uefi`: A boolean value indicating whether the system uses UEFI instead of BIOS. The default value is "false". 
-`arch-chroot`: A boolean value indicating whether to run the script in the Arch Linux chroot environment. The default value is "false". 
-`post_install_commands`: A string specifying the commands to be executed after the package installation. The default value is an empty string. 
-`post_install_chroot_commands`: A string specifying the commands to be executed after the package installation in the Arch Linux chroot environment. The default value is an empty string. 
+`grub_install_disk`: The storage device where the GRUB bootloader will be installed. The default value is "/dev/".
+
+`pacstrap_skip`: A boolean value indicating whether to skip the installation of Arch Linux basic packages. The default value is "false".
+
+`additional_packages`: A string specifying the additional packages to install. The default value is an empty string.
+
+`uefi`: A boolean value indicating whether the system uses UEFI instead of BIOS. The default value is "false".
+
+`arch-chroot`: A boolean value indicating whether to run the script in the Arch Linux chroot environment. The default value is "false".
+
+`post_install_commands`: A string specifying the commands to be executed after the package installation. The default value is an empty string.
+
+`post_install_chroot_commands`: A string specifying the commands to be executed after the package installation in the Arch Linux chroot environment. The default value is an empty string.
+
 `reboot`: Allows specifying whether to restart the system after installation. If this field is omitted, the default configuration will be used.
