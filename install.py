@@ -44,7 +44,6 @@ pacstrap_skip = dat["pacstrap_skip"]
 global wifii
 wifii = ""
 grub_install_disk = dat["grub_install_disk"]
-root_password = dat["root_passwd"]
 
 
 class partitions:
@@ -150,8 +149,6 @@ sys("passwd --root /mnt")
 
 sys(f"echo exit|echo {p_i_ch_c}|arch-chroot /mnt")
 
-
-sys(f"echo exit|echo 'root:{root_password}' | echo chpasswd|arch-chroot /mnt")
 
 if arch_chroot == True:
     sys("arch-chroot /mnt")
