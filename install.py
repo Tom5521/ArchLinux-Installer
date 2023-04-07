@@ -140,11 +140,14 @@ else:
 sys("echo exit|echo grub-mkconfig -o /boot/grub/grub.cfg|arch-chroot /mnt")
 sys(p_i_c)
 if keyboard in command_read("localectl list-keymaps"):
-    sys(f"echo KEYMAP={keyboard} > /mnt/etc/vconsole.conf")
+    sys(
+        f"echo exit|echo echo KEYMAP={keyboard} > /mnt/etc/vconsole.conf|arch-chroot /mnt"
+    )
 else:
     print(red("WARNING:keyboard specification not exist "))
 
-sys("passwd --root /mnt")
+print(red("Password for new root:"))
+sys("sh passwd.sh")
 
 
 sys(f"echo exit|echo {p_i_ch_c}|arch-chroot /mnt")

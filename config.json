@@ -28,7 +28,7 @@
             "format": false
         }
     },
-    "grub_install_disk": "/dev/sda",
+    "grub_install_disk": "/dev/",
     "pacstrap_skip": false,
     "additional_packages": "",
     "uefi": false,
