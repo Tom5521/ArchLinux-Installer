@@ -1,22 +1,21 @@
 {
-    "root_passwd": "1234",
     "custom_pacman_config": true,
-    "keyboard": "es",
+    "keyboard": "",
     "wifi": {
         "state": false,
-        "name": "'My wifi'",
-        "adaptator": "wlan0",
-        "password": "'my_password_is_horrible'"
+        "name": "''",
+        "adaptator": "",
+        "password": "''"
     },
     "partitions": {
         "boot": {
-            "partition": "/dev/sda1",
-            "format": true,
+            "partition": "/dev/",
+            "format": false,
             "filesystem": "fat32"
         },
         "root": {
-            "partition": "/dev/sda2",
-            "format": true,
+            "partition": "/dev/",
+            "format": false,
             "filesystem": "ext4"
         },
         "home": {
@@ -31,10 +30,10 @@
     },
     "grub_install_disk": "/dev/sda",
     "pacstrap_skip": false,
-    "additional_packages": "vim",
+    "additional_packages": "",
     "uefi": false,
     "arch-chroot": false,
-    "post_install_commands": "echo Hiii!",
-    "post_install_chroot_commands": "pacman -S fish",
+    "post_install_commands": "",
+    "post_install_chroot_commands": "",
     "reboot": false
 }

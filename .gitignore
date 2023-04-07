@@ -2,5 +2,6 @@
 mount.py
 pacstrap.py
 Arch-Linux-Installer.code-workspace
-extra_configs example.json
-extra_configs.json
+post-install-tweaks.json
+post-install-tweaks example.json
+test.py

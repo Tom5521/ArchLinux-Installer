@@ -22,7 +22,7 @@ def red(datt):
 
 
 def green(datt):
-    return "\033[32m" + datt + "\033[32m"
+    return "\033[32m" + datt + "\033[0m"
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~FLAGS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -143,7 +143,11 @@ sys(p_i_c)
 if keyboard in command_read("localectl list-keymaps"):
     sys(f"echo KEYMAP={keyboard} > /mnt/etc/vconsole.conf")
 else:
-    print(red("WARNING:keyboard specification not exist"))
+    print(red("WARNING:keyboard specification not exist "))
+
+sys("passwd --root /mnt")
+
+
 sys(f"echo exit|echo {p_i_ch_c}|arch-chroot /mnt")
 
 
