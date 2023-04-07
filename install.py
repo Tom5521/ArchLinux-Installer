@@ -146,14 +146,16 @@ if keyboard in command_read("localectl list-keymaps"):
 else:
     print(red("WARNING:keyboard specification not exist "))
 
-print(red("Password for new root:"))
-sys("sh passwd.sh")
-
 
 sys(f"echo exit|echo {p_i_ch_c}|arch-chroot /mnt")
 
-
+print(
+    red(
+        'please use the command "passwd --root /mnt" to set the root password before rebooting.'
+    )
+)
 if arch_chroot == True:
     sys("arch-chroot /mnt")
+
 if reboot == True:
     sys("reboot")
