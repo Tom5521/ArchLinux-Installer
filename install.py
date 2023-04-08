@@ -112,10 +112,9 @@ if uefi == True:
     if "efi" not in os.listdir(path="/mnt"):
         sys("mkdir /mnt/efi")
     sys("mount " + partitions.boot["partition"] + " /mnt/efi")
-else:
-    if "boot" not in os.listdir(path="/mnt"):
-        sys("mkdir /mnt/boot")
-    sys("mount " + partitions.boot["partition"] + " /mnt/boot")
+elif "boot" not in os.listdir(path="/mnt"):
+    sys("mkdir /mnt/boot")
+sys("mount " + partitions.boot["partition"] + " /mnt/boot")
 if partitions.home["partition"] != "/dev/":
     if "home" not in os.listdir(path="/mnt"):
         sys("mkdir /mnt/home")
