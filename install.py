@@ -97,10 +97,12 @@ if partitions.boot["format"] == True:
             + partitions.boot["partition"]
         )
 if partitions.root["format"] == True:
-    sys("mkfs." + partitions.root["filesystem"] + " -F " + partitions.root["partition"])
+    sys("mkfs." + partitions.root["filesystem"] +
+        " -F " + partitions.root["partition"])
 
 if partitions.home["format"] == True and partitions.home["partition"] != "/dev/":
-    sys("mkfs." + partitions.home["filesystem"] + " -F " + partitions.home["partition"])
+    sys("mkfs." + partitions.home["filesystem"] +
+        " -F " + partitions.home["partition"])
 
 if partitions.swap["format"] == True and partitions.swap["partition"] != "/dev/":
     sys("mkswap " + partitions.swap["partition"])
