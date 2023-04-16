@@ -3,6 +3,9 @@
 My Arch Linux installer
 
 No entiendes nada?Tranquilo amigo [aqui](https://github.com/Tom5521/Arch-Linux-Installer/blob/master/Documentation/README%20es.md) tienes la documentacion en español
+
+you can download it quickly with this command ``` curl -LJO https://acortar.link/UBBABm ```
+
 ## Usage
 
 ### Configuration
