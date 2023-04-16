@@ -25,6 +25,9 @@ def green(datt):
     return "\033[32m" + datt + "\033[0m"
 
 
+if "config.json" not in os.listdir():
+    print(red("Configuration file does not exist"))
+    exit()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~FLAGS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 keyboard = dat["keyboard"]
 wifi = {
