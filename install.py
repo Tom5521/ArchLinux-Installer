@@ -21,12 +21,20 @@ def red(datt):
     return "\033[31m" + datt + "\033[0m"
 
 
+def yellow(self):
+    return f"\033[33m{self}\033[0m"
+
+
 def green(datt):
     return "\033[32m" + datt + "\033[0m"
 
 
 if "config.json" not in os.listdir():
     print(red("Configuration file does not exist"))
+    print(yellow("Cloning config.json template"))
+    sys(
+        "wget https://raw.githubusercontent.com/Tom5521/ArchLinux-Installer/master/config.json"
+    )
     exit()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~FLAGS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 keyboard = dat["keyboard"]
@@ -50,6 +58,10 @@ grub_install_disk = dat["grub_install_disk"]
 
 if custom_config == True and "pacman.conf" not in os.listdir():
     print(red("no custom pacman config"))
+    print(yellow("Cloning pacman.conf..."))
+    sys(
+        "wget https://raw.githubusercontent.com/Tom5521/ArchLinux-Installer/master/pacman.conf"
+    )
     exit()
 
 
