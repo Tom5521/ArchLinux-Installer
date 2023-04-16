@@ -2,6 +2,7 @@ from os import system as sys
 import json
 import subprocess
 import os
+from sys import exit
 
 
 def clear():
@@ -66,7 +67,6 @@ if custom_config == True and "pacman.conf" not in os.listdir():
     sys(
         "wget https://raw.githubusercontent.com/Tom5521/ArchLinux-Installer/master/pacman.conf"
     )
-    exit()
 
 
 class partitions:
