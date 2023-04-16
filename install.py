@@ -30,10 +30,8 @@ def green(datt):
 if "config.json" not in os.listdir():
     print(red("Configuration file does not exist"))
     print(yellow("Cloning config.json template"))
-    if "wget" not in command_read("pacman -Qs wget"):
-        sys("pacman -Syy wget --noconfirm")
     sys(
-        "wget https://raw.githubusercontent.com/Tom5521/ArchLinux-Installer/master/config.json"
+        "curl -LJO https://raw.githubusercontent.com/Tom5521/ArchLinux-Installer/master/config.json"
     )
     exit()
 
@@ -62,10 +60,8 @@ grub_install_disk = dat["grub_install_disk"]
 if custom_config == True and "pacman.conf" not in os.listdir():
     print(red("no custom pacman config"))
     print(yellow("Cloning pacman.conf..."))
-    if "wget" not in command_read("pacman -Qs wget"):
-        sys("pacman -Syy wget --noconfirm")
     sys(
-        "wget https://raw.githubusercontent.com/Tom5521/ArchLinux-Installer/master/pacman.conf"
+        "curl -LJO https://raw.githubusercontent.com/Tom5521/ArchLinux-Installer/master/pacman.conf"
     )
 
 
