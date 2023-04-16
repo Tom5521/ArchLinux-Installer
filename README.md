@@ -2,7 +2,7 @@
 # Arch-Installer
 My Arch Linux installer
 
-No entiendes nada?Tranquilo amigo [aqui](https://github.com/Tom5521/Arch-Linux-Installer/blob/master/README.md) tienes la documentacion en español
+No entiendes nada?Tranquilo amigo [aqui](https://github.com/Tom5521/Arch-Linux-Installer/blob/master/Documentation/README%20es.md) tienes la documentacion en español
 ## Usage
 
 ### Configuration
