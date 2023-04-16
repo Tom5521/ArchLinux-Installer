@@ -6,3 +6,7 @@ post-install-tweaks.json
 post-install-tweaks example.json
 test.py
 config_testing.json
+__pycache__
+dist 
+build
+install.spec

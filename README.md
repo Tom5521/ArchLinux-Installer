@@ -1,45 +1,53 @@
+
 # Arch-Installer
-Mi instalador de Arch-Linux
+My Arch Linux installer
 
-Do you not understand anything? Don't worry, [here](https://github.com/Tom5521/Arch-Linux-Installer/blob/master/README%20en.md) is the English version
-## Uso
+No entiendes nada?Tranquilo amigo [aqui](https://github.com/Tom5521/Arch-Linux-Installer/blob/master/README.md) tienes la documentacion en español
+## Usage
 
-### Configurar
-El archivo JSON es una estructura de datos que se utiliza para configurar los parámetros de instalación del script de Python proporcionado. A continuación, se describe cada una de las opciones de configuración disponibles:
+### Configuration
 
-```custom_pacman_config```: Un valor booleano que indica si se desea utilizar una configuración personalizada de pacman. El valor predeterminado es "true".
+The JSON file is a data structure used to configure the installation parameters of the provided Python script. Below are the available configuration options:
 
-```keyboard```: Configura el diseño del teclado para la instalación. El valor predeterminado es "en".
+`custom_pacman_config`: A boolean value indicating whether to use a custom pacman configuration. The default value is "true". 
+`keyboard`: Configures the keyboard layout for the installation. The default value is an empty string.
+
 #### Wifi
-```wifi```: Un objeto que especifica la configuración de la red inalámbrica. Se compone de las siguientes cuatro propiedades:
-1. ```state```: Un valor booleano que indica si se desea habilitar la conexión inalámbrica. El valor predeterminado es "false".
-2. ```name```: El nombre de la red inalámbrica a la que se desea conectar. El valor predeterminado es una cadena vacía.
-3. ```adaptator```: El adaptador de red inalámbrica que se utilizará para la conexión. El valor predeterminado es una cadena vacía.
-4. ```password```: La contraseña de la red inalámbrica. El valor predeterminado es una cadena vacía.
-#### Particiones
-```partitions```: Un objeto que especifica las particiones que se utilizarán para la instalación. Se compone de las siguientes propiedades:
-- ```boot```: Un objeto que especifica la partición de arranque. Se compone de las siguientes propiedades:
-1. ```partition```: El dispositivo de la partición. El valor predeterminado es "/dev/".
-2. ```format```: Un valor booleano que indica si se desea formatear la partición. El valor predeterminado es "false".
-3. ```filesystem```: El sistema de archivos que se utilizará para la partición. El valor predeterminado es "fat32".
-- ```root```: Un objeto que especifica la partición raíz. Se compone de las mismas propiedades que la partición de arranque.
-- ```home```: Un objeto que especifica la partición de la carpeta de inicio. Se compone de las mismas propiedades que la partición de arranque.
-- ```swap```: Un objeto que especifica la partición de intercambio. Se compone de las mismas propiedades que la partición de arranque, excepto que no tiene la propiedad "filesystem".
 
-#### Configuraciones Extra
+- `wifi`: An object specifying the wireless network configuration. It consists of the following four properties: 
+1. `state`: A boolean value indicating whether to enable the wireless connection. The default value is "false". 
+2. `name`: The name of the wireless network to connect to. The default value is an empty string. 
+3. `adapter`: The wireless network adapter to use for the connection. The default value is an empty string. 
+4. `password`: The password for the wireless network. The default value is an empty string.
 
-```grub_install_disk```: El dispositivo de almacenamiento en el que se instalará el gestor de arranque GRUB. El valor predeterminado es "/dev/".
+#### Partitions
 
-```pacstrap_skip```: Un valor booleano que indica si se desea saltar la instalación de los paquetes básicos de Arch Linux. El valor predeterminado es "false".
+`partitions`: An object specifying the partitions to be used for the installation. It consists of the following properties:
 
-```additional_packages```: Una cadena que especifica los paquetes adicionales que se desean instalar. El valor predeterminado es una cadena vacía.
+1.  `boot`: An object specifying the boot partition. It consists of the following properties:
 
-```uefi```: Un valor booleano que indica si el sistema utiliza UEFI en lugar del BIOS. El valor predeterminado es "false".
+*   `partition`: The partition device. The default value is "/dev/".
+*   `format`: A boolean value indicating whether to format the partition. The default value is "false".
+*   `filesystem`: The file system to be used for the partition. The default value is "fat32".
 
-```arch-chroot```: Un valor booleano que indica si se debe ejecutar el script en el entorno chroot de Arch Linux. El valor predeterminado es "false".
+2.  `root`: An object specifying the root partition. It has the same properties as the boot partition.
+3.  `home`: An object specifying the home folder partition. It has the same properties as the boot partition.
+4.  `swap`: An object specifying the swap partition. It has the same properties as the boot partition, except it does not have the "filesystem" property.
 
-```post_install_commands```: Una cadena que especifica los comandos que se ejecutarán después de la instalación de los paquetes. El valor predeterminado es una cadena vacía.
+#### Extra Configs
 
-```post_install_chroot_commands```: Una cadena que especifica los comandos que se ejecutarán después de la instalación de los paquetes en el entorno chroot de Arch Linux. El valor predeterminado es una cadena vacia
+`grub_install_disk`: The storage device where the GRUB bootloader will be installed. The default value is "/dev/".
 
-```reboot```: permite especificar si se debe reiniciar el sistema después de la instalación. Si se omite este campo, se utilizará la configuración por defecto.
+`pacstrap_skip`: A boolean value indicating whether to skip the installation of Arch Linux basic packages. The default value is "false".
+
+`additional_packages`: A string specifying the additional packages to install. The default value is an empty string.
+
+`uefi`: A boolean value indicating whether the system uses UEFI instead of BIOS. The default value is "false".
+
+`arch-chroot`: A boolean value indicating whether to run the script in the Arch Linux chroot environment. The default value is "false".
+
+`post_install_commands`: A string specifying the commands to be executed after the package installation. The default value is an empty string.
+
+`post_install_chroot_commands`: A string specifying the commands to be executed after the package installation in the Arch Linux chroot environment. The default value is an empty string.
+
+`reboot`: Allows specifying whether to restart the system after installation. If this field is omitted, the default configuration will be used.
