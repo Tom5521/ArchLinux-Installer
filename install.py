@@ -48,6 +48,10 @@ global wifii
 wifii = ""
 grub_install_disk = dat["grub_install_disk"]
 
+if custom_config == True and "pacman.conf" not in os.listdir():
+    print(red("no custom pacman config"))
+    exit()
+
 
 class partitions:
     boot = {

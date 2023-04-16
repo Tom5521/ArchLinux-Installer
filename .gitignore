@@ -10,3 +10,4 @@ __pycache__
 dist 
 build
 install.spec
+ArchLinux-Installer.spec
