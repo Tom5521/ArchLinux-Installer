@@ -3,7 +3,7 @@ import json
 import subprocess
 import os
 
-with open("config_testing.json") as f:
+with open("config.json") as f:
     dat = json.load(f)
 
 
