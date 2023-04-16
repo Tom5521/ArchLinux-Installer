@@ -1,7 +1,7 @@
 # Arch-Installer
 Mi instalador de Arch-Linux
 
-Do you not understand anything? Don't worry, [here](https://github.com/Tom5521/Arch-Linux-Installer/blob/master/README%20en.md) is the English version
+Do you not understand anything? Don't worry, [here](https://github.com/Tom5521/Arch-Linux-Installer/blob/master/README.md) is the English version
 ## Uso
 
 ### Configurar
