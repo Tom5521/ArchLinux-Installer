@@ -1,4 +1,3 @@
-from os import system as sys
 import json
 import subprocess
 import os
@@ -25,6 +24,18 @@ def yellow(self):
 
 def green(datt):
     return "\033[32m" + datt + "\033[0m"
+
+def error():
+    print(red("ERROR"))
+
+def sys(command):
+    try:
+        subprocess.check_call(command, shell=True)
+        return True
+    except subprocess.CalledProcessError:
+        subprocess.call(command, shell=True)
+        error()
+        return False
 
 
 if "config.json" not in os.listdir():
@@ -125,7 +136,8 @@ if partitions.swap["format"] == True and partitions.swap["partition"] != "/dev/"
     sys("mkswap " + partitions.swap["partition"])
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~MOUNT~PARTITIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-print(green("Mounting partitions..."))
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+print(yellow("Mounting partitions..."))
 sys("mount " + partitions.root["partition"] + " /mnt")
 if uefi == True:
     if "efi" not in os.listdir(path="/mnt"):
@@ -146,26 +158,40 @@ if pacstrap_skip == False:
     sys(
         f"pacstrap /mnt base base-devel grub git efibootmgr dialog wpa_supplicant nano linux linux-headers linux-firmware {wifii} {additional_packages}"
     )
-sys("genfstab -pU /mnt >> /mnt/etc/fstab")
 
-print(green("Installing grub..."))
-if uefi == False:
-    sys(f"echo exit|echo grub-install {grub_install_disk}|arch-chroot /mnt")
 else:
-    sys(
+    print(yellow("Skipping pacstrap..."))
+print(yellow("generating fstab"))
+fstab = sys("genfstab -pU /mnt >> /mnt/etc/fstab")
+if fstab == True:
+    print(green("Fstab generated correctly"))
+print(yellow("Installing grub..."))
+if uefi == False:
+    grub = sys(f"echo exit|echo grub-install {grub_install_disk}|arch-chroot /mnt")
+else:
+    print(yellow("UEFI/EFI mode is true"))
+    grub = sys(
         f"echo exit|echo grub-install {grub_install_disk} --efi-directory /efi|arch-chroot /mnt"
     )
-sys("echo exit|echo grub-mkconfig -o /boot/grub/grub.cfg|arch-chroot /mnt")
-sys(p_i_c)
+
+mkconfig = sys("echo exit|echo grub-mkconfig -o /boot/grub/grub.cfg|arch-chroot /mnt")
+if grub and mkconfig == True:
+    print(green("Grub installed correctly"))
+
+if p_i_c != "":
+    sys(p_i_c)
 if keyboard in command_read("localectl list-keymaps"):
-    sys(
+    print(yellow("Setting Keyboard"))
+    keyboards = sys(
         f"echo exit|echo echo KEYMAP={keyboard} > /mnt/etc/vconsole.conf|arch-chroot /mnt"
     )
+    if keyboards == True:
+        print(green("Keyboard configured correctly"))
 else:
     print(red("WARNING:keyboard specification not exist "))
 
-
-sys(f"echo exit|echo {p_i_ch_c}|arch-chroot /mnt")
+if p_i_ch_c != "":
+    sys(f"echo exit|echo {p_i_ch_c}|arch-chroot /mnt")
 
 print(
     red(
